@@ -1,0 +1,94 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@nx", "simple-import-sort", "unused-imports"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
+      "rules": {
+        "endOfLine": "off",
+        /**
+         * https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-function-return-type.md
+         */
+        "@typescript-eslint/explicit-function-return-type": "warn",
+
+        /**
+         * https://github.com/lydell/eslint-plugin-simple-import-sort
+         */
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^\\w", "^@\\w"], // external deps
+              ["^@rekoded/"], // @rekoded internal dependencies
+              ["^\\.\\./", "^\\./"], // local dependencies
+              ["^\\./(.*)module.scss$"] // css always last
+            ]
+          }
+        ],
+        "simple-import-sort/exports": "error",
+
+        /**
+         * https://github.com/sweepline/eslint-plugin-unused-imports
+         */
+        "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ]
+
+        /**
+         * https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md
+         */
+        // "import/order": [
+        //   "error",
+        //   {
+        //     "groups": ["builtin", "external", "internal"],
+        //     "pathGroups": [
+        //       {
+        //         "pattern": "react",
+        //         "group": "external",
+        //         "position": "before"
+        //       }
+        //     ],
+        //     "pathGroupsExcludedImportTypes": ["react"],
+        //     "newlines-between": "always",
+        //     "alphabetize": {
+        //       "order": "asc",
+        //       "caseInsensitive": true
+        //     }
+        //   }
+        // ]
+      }
+    }
+  ]
+}

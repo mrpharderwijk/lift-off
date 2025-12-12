@@ -1,0 +1,35 @@
+{
+  "name": "@lift-off/lift-off-ui",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "@eslint/js": "^9.9.1",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "typescript-eslint": "^8.3.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-styling-webpack": "^1.0.0",
+    "tailwind-merge": "^2.5.3"
+  }
+}
