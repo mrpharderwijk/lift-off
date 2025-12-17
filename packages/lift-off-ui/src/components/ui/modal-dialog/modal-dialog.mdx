@@ -1,0 +1,49 @@
+import { Canvas, Meta, Source, ArgTypes } from '@storybook/blocks';
+
+import * as ModalDialogStories from './modal-dialog.stories';
+
+<Meta of={ModalDialogStories} />
+
+# ModalDialog
+
+A `ModalDialog` displays content in a modal overlay, focusing user attention and blocking interaction with the underlying page. It supports headers, footers, close behaviors, contextual actions, and flexible content.
+
+<Canvas of={ModalDialogStories.Default} />
+
+## Header
+
+A modal can display a header with a title and an optional close button.
+
+<Canvas of={ModalDialogStories.WithHeader} />
+
+## Footer
+
+You can pass a `footer` node to render a persistent action bar at the bottom of the modal.
+
+<Canvas of={ModalDialogStories.WithFooter} />
+
+## Image
+
+Optionally include an image or other element above the modal content.
+
+<Canvas of={ModalDialogStories.WithImage} />
+
+## Controlling Close Behavior
+
+- **Hide the close button:** Set `showHeaderCloseButton` to `false`.
+- **Disable escape key close:** Set `closeOnEscape` to `false`.
+- **Disable close on outside click:** Set `closeOnOutsideClick` to `false`.
+
+<Canvas of={ModalDialogStories.WithoutCloseButton} />
+<Canvas of={ModalDialogStories.WithoutEscapeKey} />
+<Canvas of={ModalDialogStories.WithoutOutsideClick} />
+
+## Long Content
+
+The modal body is scrollable when content overflows.
+
+<Canvas of={ModalDialogStories.LongContent} />
+
+## Props
+
+<ArgTypes of={ModalDialogStories} />

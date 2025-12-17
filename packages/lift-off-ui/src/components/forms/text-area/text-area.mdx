@@ -1,0 +1,19 @@
+import { Canvas, Meta, Source, ArgTypes } from '@storybook/blocks';
+
+import * as TextAreaStories from './text-area.stories';
+
+<Meta of={TextAreaStories} />
+
+# Input
+
+A `Input` is a component that allows you to create an input field.
+
+<Canvas of={TextAreaStories.Default} />
+
+<Canvas of={TextAreaStories.WithValue} />
+
+<Canvas of={TextAreaStories.Disabled} />
+
+<Canvas of={TextAreaStories.WithError} />
+
+<ArgTypes of={TextAreaStories} />

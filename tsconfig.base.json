@@ -4,18 +4,19 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
+    "moduleDetection": "force",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@lift-off/lift-off-ui": ["libs/lift-off-ui/src/index.ts"]
+      "@/*": ["packages/lift-off-ui/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

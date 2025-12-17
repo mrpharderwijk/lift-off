@@ -1,0 +1,76 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@mrpharderwijk'
+
+      - name: Setup Yarn
+        uses: actions/setup-yarn@v1
+        with:
+          yarn-version: 'stable'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build library
+        run: npx nx build lift-off-ui
+
+      - name: Get current version
+        id: get_version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./packages/lift-off-ui/package.json').version")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+
+      - name: Bump minor version
+        id: bump_version
+        run: |
+          cd packages/lift-off-ui
+          NEW_VERSION=$(npm version minor --no-git-tag-version)
+          NEW_VERSION=${NEW_VERSION#v}
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+      - name: Copy package.json and README to dist
+        run: |
+          cp packages/lift-off-ui/package.json dist/packages/lift-off-ui/
+          if [ -f packages/lift-off-ui/README.md ]; then
+            cp packages/lift-off-ui/README.md dist/packages/lift-off-ui/
+          fi
+
+      - name: Publish to GitHub Packages
+        working-directory: dist/packages/lift-off-ui
+        run: |
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit version bump
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add packages/lift-off-ui/package.json
+          git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }}" || exit 0
+          git push

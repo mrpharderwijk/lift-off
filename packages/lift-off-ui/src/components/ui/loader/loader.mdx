@@ -1,0 +1,17 @@
+import { Canvas, Meta, Source, ArgTypes } from '@storybook/blocks';
+
+import * as LoaderStories from './loader.stories';
+
+<Meta of={LoaderStories} />
+
+# Loader
+
+A `Loader` is a UI component that visually indicates content is loading or an operation is in progress. Use it to keep users informed and engaged while waiting for background tasks to complete.
+
+<Canvas of={LoaderStories.Small} />
+
+<Canvas of={LoaderStories.Medium} />
+
+<Canvas of={LoaderStories.Large} />
+
+<ArgTypes of={LoaderStories} />

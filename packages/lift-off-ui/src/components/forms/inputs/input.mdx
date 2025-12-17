@@ -1,0 +1,23 @@
+import { Canvas, Meta, Source, ArgTypes } from '@storybook/blocks';
+
+import * as InputStories from './input.stories';
+
+<Meta of={InputStories} />
+
+# Input
+
+A `Input` is a component that allows you to create an input field.
+
+<Canvas of={InputStories.Default} />
+
+<Canvas of={InputStories.WithValue} />
+
+<Canvas of={InputStories.Disabled} />
+
+<Canvas of={InputStories.WithError} />
+
+<Canvas of={InputStories.WithCustomAction} />
+
+<Canvas of={InputStories.Password} />
+
+<ArgTypes of={InputStories} />

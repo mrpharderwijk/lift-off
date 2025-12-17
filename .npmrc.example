@@ -1,0 +1,12 @@
+# GitHub Packages configuration
+# Copy this file to .npmrc in your project root
+# This file is gitignored, so you can safely put your token here
+#
+# For Yarn v1: Replace YOUR_GITHUB_TOKEN_HERE with your actual token
+# For npm or Yarn v2+: You can use ${GITHUB_TOKEN} if the env var is set
+#
+# Note: The deploy script (yarn loui:deploy) handles authentication automatically
+# and doesn't require this file. This .npmrc is mainly for installing packages.
+
+@mrpharderwijk:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN_HERE

@@ -1,1 +1,4 @@
-export default ['**/*/vite.config.ts', '**/*/vitest.config.ts'];
+export default [
+  './packages/lift-off-ui/vite.config.ts',
+  '**/*/vitest.config.ts',
+];

@@ -1,0 +1,17 @@
+import { Canvas, Meta, Source, ArgTypes } from '@storybook/blocks';
+
+import * as BackgroundStories from './background.stories';
+
+<Meta of={BackgroundStories} />
+
+# Background
+
+A `Background` is used to provide a colored background for its children, supporting semantic color variants.
+
+<Canvas of={BackgroundStories.Overview} />
+
+<Canvas of={BackgroundStories.WithPrimaryColor} />
+
+<Canvas of={BackgroundStories.WithSecondaryColor} />
+
+<ArgTypes of={BackgroundStories} />
