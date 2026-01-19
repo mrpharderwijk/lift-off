@@ -1,4 +1,4 @@
-import { AlignJustify } from 'lucide-react';
+import { AlignJustify, UserIcon } from 'lucide-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { FlexBox } from '@/components/layout/flex-box/flex-box';
@@ -132,6 +132,13 @@ const Template: StoryFn = (args: ButtonProps) => <Button {...args} />;
 export const Avatar = Template.bind({});
 Avatar.args = {
   avatar: true,
+};
+
+export const WithIcon = Template.bind({});
+WithIcon.args = {
+  icon: UserIcon,
+  iconOnly: true,
+  variant: 'quaternary',
 };
 
 export const Primary = Template.bind({});

@@ -1,0 +1,25 @@
+import { Meta, Canvas, ArgTypes, Source } from '@storybook/blocks';
+
+import * as ButtonStories from './button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A `Button` component triggers actions in your application. It can be used for form submissions, navigation, or custom actions.
+
+<Canvas of={ButtonStories.Avatar} />
+
+<Canvas of={ButtonStories.WithIcon} />
+
+<Canvas of={ButtonStories.Primary} />
+
+## Usage
+
+<Source
+  code={`import { Button } from '@/components/ui/buttons/button';
+
+<Button variant="primary" onClick={() => alert('Clicked!')}>
+  Click me
+</Button>
+`} />

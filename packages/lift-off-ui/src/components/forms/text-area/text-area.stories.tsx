@@ -26,33 +26,33 @@ const Template: StoryFn<TextAreaProps> = (args: TextAreaProps) => {
 export const Default = Template.bind({});
 Default.args = {
   value: '',
-  label: 'Input',
+  label: 'Text Area',
 };
 
 export const WithValue = Template.bind({});
 WithValue.args = {
   value: 'Some text',
-  label: 'Input',
+  label: 'Text Area',
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
   value: 'Disabled input',
-  label: 'Input',
+  label: 'Text Area',
 };
 
 export const WithError = Template.bind({});
 WithError.args = {
   error: 'This field is required.',
   value: '',
-  label: 'Input',
+  label: 'Text Area',
 };
 
 export const WithCharacterCount = Template.bind({});
 WithCharacterCount.args = {
   value: '',
-  label: 'Input',
+  label: 'Text Area',
   charCount: true,
   maxLength: 150,
 };

@@ -46,16 +46,19 @@ export function Input({
   );
 
   const hasError = !!error || hasPatternError;
-  const inputClassName = cn(
-    'w-full h-14 pt-5 px-4 pb-1 border border-border-quarternary rounded-lg transition-all duration-200 text-base-lg font-medium text-text-primary outline-offset-2 outline-black',
+  const inputContainerClassName = cn(
+    'flex flex-row items-center justify-start p-2 gap-2 w-full h-14 border border-border-quarternary rounded-lg transition-all duration-200 outline-offset-2',
     {
-      'border-border-secondary-error outline-1 !outline-border-secondary-error':
+      'border-border-secondary-error outline-2 !outline-border-secondary-error':
         hasError && isFocused,
-      'border-border-secondary-error bg-bg-primary-error outline-black':
+      'border-border-secondary-error bg-bg-primary-error':
         hasError && !isFocused,
       'bg-bg-primary-disabled cursor-not-allowed': !!disabled,
-      'border-r-0 rounded-r-none': !!customAction,
+      'outline-2 outline-offset-2': !hasError && isFocused,
     }
+  );
+  const inputClassName = cn(
+    'w-full h-14 pt-5 px-4 pb-1 rounded-lg transition-all duration-200 text-base-lg font-medium text-text-primary outline-none'
   );
   const labelClassName = cn(
     'absolute pointer-events-none transition-all duration-200 font-medium',
@@ -92,11 +95,7 @@ export function Input({
   return (
     <Field>
       <FlexBox flex-direction="col" gap={2} width="full">
-        <FlexBox
-          flex-direction="row"
-          align-items="center"
-          justify-content="start"
-        >
+        <div className={inputContainerClassName}>
           <FlexBox.Item flex="auto" position="relative">
             <FieldLabel htmlFor={id} className={labelClassName}>
               {label}
@@ -119,7 +118,7 @@ export function Input({
           {!!customAction && (
             <FlexBox.Item flex="initial">{customAction}</FlexBox.Item>
           )}
-        </FlexBox>
+        </div>
         {error && !disableError && (
           <FlexBox
             flex-direction="row"

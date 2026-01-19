@@ -53,12 +53,13 @@ export function TextArea({
       'min-height': minHeight,
     }),
     {
-      'border-border-secondary-error outline-1 !outline-border-secondary-error':
+      'border-border-secondary-error outline-2 !outline-border-secondary-error':
         hasError && isFocused,
       'border-border-secondary-error bg-bg-primary-error outline-black':
         hasError && !isFocused,
       'bg-bg-primary-disabled text-text-secondary-disabled cursor-not-allowed':
         !!disabled,
+      'outline-2 outline-offset-2': !hasError && isFocused,
     }
   );
   const labelClassName = cn(

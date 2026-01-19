@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { InputEmail } from './input-email';
+import { InputEmail, InputEmailProps } from './input-email';
+import { Box } from '@/components/layout';
+import { Button } from '@/components/ui/buttons/button';
+import { XIcon } from 'lucide-react';
 
 const meta: Meta<typeof InputEmail> = {
   title: 'Components/Forms/Inputs/InputEmail',
@@ -21,91 +24,84 @@ export default meta;
 
 type Story = StoryObj<typeof InputEmail>;
 
-export const Basic: Story = {
-  render: (args) => {
-    const [value, setValue] = useState(args.value as string);
-    return (
+const Template: StoryFn<InputEmailProps> = (args: InputEmailProps) => {
+  const [value, setValue] = useState(args.value ?? '');
+
+  return (
+    <Box margin={4}>
       <InputEmail
         {...args}
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-    );
-  },
-  args: {
-    label: 'Email',
-    placeholder: 'Enter your email',
-    value: '',
-  },
+    </Box>
+  );
 };
 
-export const WithError: Story = {
-  render: (args) => {
-    const [value, setValue] = useState(args.value as string);
-    return (
-      <InputEmail
-        {...args}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        error="Please enter a valid email address."
-      />
-    );
-  },
-  args: {
-    value: 'invalid email',
-  },
+export const Default = Template.bind({});
+Default.args = {
+  value: '',
+  label: 'Email Address',
 };
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    value: '',
-    label: 'Disabled Email',
-    placeholder: 'Email input (disabled)',
-  },
+export const WithValue = Template.bind({});
+WithValue.args = {
+  value: 'test@example.com',
+  label: 'Email Address',
 };
 
-export const FloatingLabel: Story = {
-  args: {
-    value: 'test@example.com',
-    placeholder: 'Will float label',
-    label: 'Email Address',
-  },
+export const WithError = Template.bind({});
+WithError.args = {
+  value: 'invalid email',
+  error: 'Please enter a valid email address.',
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  disabled: true,
+  value: 'john.doe@example.com',
+  label: 'Disabled Email',
+  placeholder: 'Email input (disabled)',
+};
+
+export const FloatingLabel = Template.bind({});
+FloatingLabel.args = {
+  value: 'test@example.com',
+  label: 'Email Address',
+  placeholder: 'Will float label',
 };
 
 export const WithCustomAction: Story = {
   render: (args) => {
-    const [value, setValue] = useState(args.value as string);
+    const [value, setValue] = useState(args.value ?? '');
+
+    function handleOnClear(): void {
+      setValue('');
+    }
+
     return (
-      <InputEmail
-        {...args}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        customAction={
-          <button
-            type="button"
-            style={{
-              height: 36,
-              marginRight: 8,
-              background: '#eee',
-              border: 'none',
-              borderRadius: 4,
-              padding: '0 12px',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              setValue('');
-            }}
-          >
-            Clear
-          </button>
-        }
-      />
+      <Box margin={4}>
+        <InputEmail
+          {...args}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          customAction={
+            !!value && (
+              <Button
+                onClick={handleOnClear}
+                icon={XIcon}
+                variant="quaternary"
+                icon-only
+              />
+            )
+          }
+        />
+      </Box>
     );
   },
   args: {
-    label: 'Email with Action',
-    placeholder: 'Email input with action',
     value: 'test@example.com',
+    label: 'Email Address',
+    placeholder: 'Email input with action',
   },
 };

@@ -1,6 +1,6 @@
 {
   "name": "@mrpharderwijk/lift-off-ui",
-  "version": "0.12.0",
+  "version": "0.0.1",
   "description": "Lift-off UI component library",
   "type": "module",
   "main": "./index.js",
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrpharderwijk/lift-off.git",
+    "url": "git+ssh://git@github.com/mrpharderwijk/lift-off.git",
     "directory": "packages/lift-off-ui"
   },
   "publishConfig": {
@@ -34,7 +34,9 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "npx vitest run"
+    "test": "npx vitest run",
+    "storybook": "storybook dev",
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "next": "^14.0.0",
@@ -58,20 +60,6 @@
     "react-leaflet": "^5.0.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
-  },
-  "devDependencies": {
-    "@storybook/addon-styling-webpack": "^1.0.0",
-    "@tailwindcss/vite": "^4.1.18",
-    "@types/leaflet": "^1.9.21",
-    "@types/node": "^25.0.1",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "focus-trap": "^7.6.6",
-    "react-hook-form": "^7.68.0",
-    "react-icons": "^5.5.0",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3",
-    "usehooks-ts": "^3.1.1"
   },
   "license": "MIT"
 }
