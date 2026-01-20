@@ -9,7 +9,7 @@ import {
 import { FlexBox } from '@/components/layout';
 import { PropsWithRef } from '@/types/props-with-ref';
 import { cn } from '@/utils/class-names';
-import { Field, FieldLabel } from '@/components/ui/shadcn/field';
+import { Field, FieldLabel } from '@/components/shadcn/field';
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> &
   PropsWithRef<HTMLInputElement> & {
@@ -39,6 +39,20 @@ export function Input({
   const [isFocused, setIsFocused] = useState(false);
   const errorId = `${id}-error`;
   const isFloating = isFocused || !!value || !!error;
+
+  // Combine aria-describedby from props with error ID
+  const describedByParts: string[] = [];
+  if (error && !disableError) {
+    describedByParts.push(errorId);
+  }
+  if (props['aria-describedby']) {
+    // Split existing aria-describedby and add each ID
+    const existingIds = props['aria-describedby'].split(/\s+/).filter(Boolean);
+    describedByParts.push(...existingIds);
+  }
+  const ariaDescribedByValue = describedByParts.length > 0
+    ? [...new Set(describedByParts)].join(' ') // Remove duplicates
+    : undefined;
   const [hasPatternError, setHasPatternError] = useState(
     !!value &&
       !!props.pattern &&
@@ -49,6 +63,7 @@ export function Input({
   const inputContainerClassName = cn(
     'flex flex-row items-center justify-start p-2 gap-2 w-full h-14 border border-border-quarternary rounded-lg transition-all duration-200 outline-offset-2',
     {
+      'pl-2 pr-0': !!customAction,
       'border-border-secondary-error outline-2 !outline-border-secondary-error':
         hasError && isFocused,
       'border-border-secondary-error bg-bg-primary-error':
@@ -107,7 +122,8 @@ export function Input({
               value={value}
               placeholder={isFloating ? placeholder : ''}
               aria-invalid={hasError}
-              aria-describedby={hasError ? errorId : undefined}
+              aria-describedby={ariaDescribedByValue}
+              aria-required={props.required}
               className={inputClassName}
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -120,21 +136,21 @@ export function Input({
           )}
         </div>
         {error && !disableError && (
-          <FlexBox
-            flex-direction="row"
-            align-items="center"
-            justify-content="start"
-            gap={1}
-          >
-            <div
-              id={errorId}
-              className="text-xs text-text-primary-error"
-              role="alert"
+          <div role="alert" aria-live="polite">
+            <FlexBox
+              flex-direction="row"
+              align-items="center"
+              justify-content="start"
+              gap={1}
             >
-              <AlertCircle size={16} />
-            </div>
-            <div className="text-xs text-text-primary-error">{error}</div>
-          </FlexBox>
+              <div className="text-xs text-text-primary-error">
+                <AlertCircle size={16} aria-hidden="true" />
+              </div>
+              <div id={errorId} className="text-xs text-text-primary-error">
+                {error}
+              </div>
+            </FlexBox>
+          </div>
         )}
       </FlexBox>
     </Field>

@@ -7,6 +7,7 @@ import {
   HTMLAttributes,
   type KeyboardEvent,
   type ReactElement,
+  useId,
   useRef,
   useState,
 } from 'react';
@@ -24,8 +25,13 @@ export type InputNumberProps = Omit<
   onChange: (value: number) => void;
   min?: number;
   max?: number;
+  step?: number;
   disabled?: boolean;
+  id?: string;
   ariaLabel?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  ariaRequired?: boolean;
   error?: string;
   prefix?: ReactElement;
   suffix?: ReactElement;
@@ -37,20 +43,51 @@ export function InputNumber({
   onChange,
   min,
   max,
+  step = 1,
   disabled = false,
-  ariaLabel = 'Numeric value',
+  id,
+  ariaLabel,
+  ariaLabelledBy,
+  ariaDescribedBy,
+  ariaRequired = false,
   error,
   prefix,
   suffix,
   decimalPlaces = 2,
   ...props
 }: InputNumberProps): ReactElement {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-error`;
   const inputRef = useRef<HTMLInputElement>(null);
   const [displayValue, setDisplayValue] = useState(
     value.toFixed(decimalPlaces)
   );
   const [isFocused, setIsFocused] = useState(false);
   const hasError = !!error;
+
+  // Build aria-describedby: combine error, step info, and custom describedBy
+  const describedByParts: string[] = [];
+  if (hasError) {
+    describedByParts.push(errorId);
+  }
+  if (ariaDescribedBy) {
+    describedByParts.push(ariaDescribedBy);
+  }
+  const ariaDescribedByValue = describedByParts.length > 0
+    ? describedByParts.join(' ')
+    : undefined;
+
+  // Calculate current numeric value for aria attributes
+  const normalizedValue = displayValue.replace(',', '.');
+  const currentNumericValue = parseFloat(normalizedValue);
+  const isValidValue = !isNaN(currentNumericValue) && displayValue !== '';
+
+  // Generate aria-valuetext for better screen reader support
+  // Provides human-readable value text (useful for formatted numbers with prefix/suffix)
+  const ariaValueText = isValidValue
+    ? String(currentNumericValue)
+    : undefined;
   const inputContainerClassName = cn(
     'w-40 h-12 border border-border-quarternary rounded-lg transition-all duration-200 overflow-hidden',
     {
@@ -95,13 +132,44 @@ export function InputNumber({
       return;
     }
 
-    // Allow: arrow keys
-    if (
-      e.key === 'ArrowLeft' ||
-      e.key === 'ArrowRight' ||
-      e.key === 'ArrowUp' ||
-      e.key === 'ArrowDown'
-    ) {
+    // Allow: arrow keys (left/right for navigation)
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      return;
+    }
+
+    // Handle: arrow up/down for step increment/decrement
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+
+      // Get current value from display or use the prop value
+      const normalizedValue = displayValue.replace(',', '.');
+      let currentValue = parseFloat(normalizedValue);
+
+      if (isNaN(currentValue)) {
+        currentValue = value;
+      }
+
+      // Calculate new value based on step
+      let newValue = e.key === 'ArrowUp'
+        ? currentValue + step
+        : currentValue - step;
+
+      // Apply min/max constraints
+      if (min !== undefined) {
+        newValue = Math.max(min, newValue);
+      }
+      if (max !== undefined) {
+        newValue = Math.min(max, newValue);
+      }
+
+      // Round to the specified number of decimal places
+      const multiplier = Math.pow(10, decimalPlaces);
+      newValue = Math.round(newValue * multiplier) / multiplier;
+
+      // Update display value and trigger onChange
+      setDisplayValue(newValue.toFixed(decimalPlaces));
+      onChange(newValue);
+
       return;
     }
 
@@ -210,6 +278,7 @@ export function InputNumber({
           <FlexBoxItem flex="auto">
             <input
               {...props}
+              id={inputId}
               className={inputClassName}
               ref={inputRef}
               type="text"
@@ -221,29 +290,39 @@ export function InputNumber({
               onKeyDown={handleInputKeyDown}
               min={min}
               max={max}
+              step={step}
               disabled={disabled}
               aria-label={ariaLabel}
+              aria-labelledby={ariaLabelledBy}
+              aria-describedby={ariaDescribedByValue}
+              aria-required={ariaRequired}
+              aria-invalid={hasError}
               role="spinbutton"
               aria-valuemin={min}
               aria-valuemax={max}
-              aria-valuenow={Number(displayValue)}
+              aria-valuenow={isValidValue ? currentNumericValue : undefined}
+              aria-valuetext={ariaValueText}
             />
           </FlexBoxItem>
           {!!suffix && <FlexBoxItem flex="initial">{suffix}</FlexBoxItem>}
         </Box>
       </div>
       {error && (
-        <FlexBox
-          flex-direction="row"
-          align-items="center"
-          justify-content="start"
-          gap={1}
-        >
-          <div className="text-xs text-text-primary-error" role="alert">
-            <AlertCircle size={16} />
-          </div>
-          <div className="text-xs text-text-primary-error">{error}</div>
-        </FlexBox>
+        <div role="alert" aria-live="polite">
+          <FlexBox
+            flex-direction="row"
+            align-items="center"
+            justify-content="start"
+            gap={1}
+          >
+            <div className="text-xs text-text-primary-error">
+              <AlertCircle size={16} aria-hidden="true" />
+            </div>
+            <div id={errorId} className="text-xs text-text-primary-error">
+              {error}
+            </div>
+          </FlexBox>
+        </div>
       )}
     </FlexBox>
   );

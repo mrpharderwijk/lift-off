@@ -13,8 +13,8 @@ import { FlexBox } from '../../layout/flex-box/flex-box';
 import { FlexBoxItem } from '../../layout/flex-box/flex-box-item/flex-box-item';
 import { PropsWithRef } from '@/types/props-with-ref';
 import { cn } from '@/utils/class-names';
-import { FieldLabel } from '@/components/ui/shadcn/field';
-import { Field } from '@/components/ui/shadcn/field';
+import { FieldLabel } from '@/components/shadcn/field';
+import { Field } from '@/components/shadcn/field';
 
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
   PropsWithRef<HTMLTextAreaElement> &

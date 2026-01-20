@@ -6,7 +6,7 @@ import { TextArea } from './text-area';
 
 import { FlexBox } from '@/components/layout/flex-box/flex-box';
 import { FlexBoxItem } from '../../layout/flex-box/flex-box-item/flex-box-item';
-import { Field, FieldLabel } from '@/components/ui/shadcn/field';
+import { Field, FieldLabel } from '@/components/shadcn/field';
 
 vi.mock('@/components/layout/flex-box/flex-box');
 const FlexBoxMock = vi
@@ -18,7 +18,7 @@ const FlexBoxItemMock = vi
   .mocked(FlexBoxItem)
   .mockImplementation(({ children }) => <div>{children}</div>);
 
-vi.mock('@/components/ui/shadcn/field');
+vi.mock('@/components/shadcn/field');
 const FieldMock = vi
   .mocked(Field)
   .mockImplementation(({ children }) => <div>{children}</div>);

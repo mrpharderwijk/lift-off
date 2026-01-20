@@ -11,6 +11,7 @@ export function InputEmail({ ...props }: InputEmailProps): ReactElement {
       {...props}
       pattern={props.pattern ?? REGEX_EMAIL.source}
       type="email"
+      inputMode="email"
       autoComplete="email"
     />
   );

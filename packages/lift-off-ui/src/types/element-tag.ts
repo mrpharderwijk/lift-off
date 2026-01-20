@@ -11,4 +11,5 @@ export type ElementTag = {
     | 'nav'
     | 'ul'
     | 'li'
+    | 'label'
 }

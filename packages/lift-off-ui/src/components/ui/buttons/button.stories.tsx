@@ -2,8 +2,8 @@ import { AlignJustify, UserIcon } from 'lucide-react';
 import { Meta, StoryFn } from '@storybook/react';
 
 import { FlexBox } from '@/components/layout/flex-box/flex-box';
-import { Body } from '@/components/typography/body/body';
-import { Heading } from '@/components/typography/heading/heading';
+import { Body } from '@/components/core/typography/body/body';
+import { Heading } from '@/components/core/typography/heading/heading';
 import { Button, ButtonProps } from '@/components/ui/buttons/button';
 import { buttonVariants } from '@/components/ui/buttons/button.class-names';
 

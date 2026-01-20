@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 
 import { FlexBox } from '@/components/layout/flex-box/flex-box';
 import { FlexBoxItem } from '@/components/layout/flex-box/flex-box-item/flex-box-item';
-import { Body } from '@/components/typography/body/body';
+import { Body } from '@/components/core/typography/body/body';
 
 type InputPasswordFeedbackProps = {
   validMessage?: string;
@@ -20,9 +20,9 @@ export function InputPasswordFeedback({
     <FlexBox flex-direction="row" align-items="center" gap={2}>
       <FlexBoxItem flex="initial">
         {valid ? (
-          <CheckIcon size={16} color="var(--color-icon-success)" />
+          <CheckIcon size={16} color="var(--color-icon-success)" aria-hidden="true" />
         ) : (
-          <OctagonXIcon size={16} color="var(--color-icon-error)" />
+          <OctagonXIcon size={16} color="var(--color-icon-error)" aria-hidden="true" />
         )}
       </FlexBoxItem>
 

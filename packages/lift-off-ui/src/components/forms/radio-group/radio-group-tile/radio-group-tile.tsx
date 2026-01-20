@@ -1,9 +1,9 @@
 import { LucideIcon } from 'lucide-react';
-import { ReactElement } from 'react';
+import { ReactElement, useId } from 'react';
 
-import { Body } from '@/components/typography/body/body';
-import { Label } from '@/components/ui/shadcn/label';
-import { RadioGroupItem } from '@/components/ui/shadcn/radio-group';
+import { Body } from '@/components/core/typography/body/body';
+import { Label } from '@/components/shadcn/label';
+import { RadioGroupItem } from '@/components/shadcn/radio-group';
 import { cn } from '@/utils/class-names';
 
 export type RadioGroupTileProps = {
@@ -12,6 +12,7 @@ export type RadioGroupTileProps = {
   value: string;
   selected: boolean;
   onClick: (value: string) => void;
+  disabled?: boolean;
 };
 
 export function RadioGroupTile({
@@ -20,21 +21,42 @@ export function RadioGroupTile({
   value,
   onClick,
   selected,
+  disabled = false,
 }: RadioGroupTileProps): ReactElement {
+  // Generate a unique ID for the radio button to associate with the label
+  // This ensures WCAG 4.1.2 compliance (Name, Role, Value)
+  const radioId = useId();
+
+  const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    // Only trigger onClick if the radio button itself wasn't clicked
+    // This prevents double-triggering and ensures proper keyboard navigation
+    if (e.target !== e.currentTarget.querySelector(`#${radioId}`)) {
+      onClick(value);
+    }
+  };
+
   return (
     <div className="w-full">
-      <RadioGroupItem value={label} className="peer sr-only" />
+      <RadioGroupItem
+        id={radioId}
+        value={value}
+        className="peer sr-only"
+        disabled={disabled}
+        aria-label={label}
+      />
       <Label
-        htmlFor={label}
+        htmlFor={radioId}
         className={cn(
           'w-full rounded-xl border p-4 flex flex-col items-start hover:border-black hover:outline-black hover:outline-1 transition cursor-pointer',
           {
             'border-tertiary-selected outline-1 bg-bg-tertiary-selected':
               selected,
             'border-border-tertiary': !selected,
+            'cursor-not-allowed opacity-50': disabled,
           }
         )}
-        onClick={() => onClick(value)}
+        onClick={handleLabelClick}
+        aria-disabled={disabled}
       >
         <div className="w-12 h-12 flex justify-start">
           <Icon
@@ -43,6 +65,7 @@ export function RadioGroupTile({
               'size-[30px]': !selected,
             })}
             size={30}
+            aria-hidden="true"
           />
         </div>
         <Body size="base-lg" font-weight="semibold" text-align="left">

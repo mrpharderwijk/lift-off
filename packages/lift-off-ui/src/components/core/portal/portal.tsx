@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, ReactPortal, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface PortalProps {
@@ -11,7 +11,7 @@ interface PortalProps {
 export function Portal({
   children,
   id = 'portal',
-}: PortalProps): ReactPortal | null {
+}: PortalProps): ReactNode | null {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -21,6 +21,6 @@ export function Portal({
   }, [])
 
   return mounted
-    ? createPortal(children, document.querySelector(`#${id}`) || document.body)
+    ? (createPortal(children, document.querySelector(`#${id}`) || document.body) as ReactNode)
     : null
 }

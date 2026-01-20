@@ -6,14 +6,14 @@
 
 // import { DotLoader } from '@/components/ui/dot-loader/dot-loader';
 // import { Input } from '@/components/forms/input/input';
-// import { Text } from '@/components/typography/text/text';
+// import { Text } from '@/components/core/typography/text/text';
 // import {
 //   Command,
 //   CommandEmpty,
 //   CommandGroup,
 //   CommandItem,
 //   CommandList,
-// } from '@/components/ui/shadcn/command';
+// } from '@/components/shadcn/command';
 // import { cn } from '@/utils/class-names';
 
 // export type AddressResult = {

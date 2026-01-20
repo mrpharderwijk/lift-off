@@ -1,6 +1,6 @@
 import { Box, FlexBox } from '@/components/layout';
 import { Display } from '@/components/layout/display/display';
-import { Text } from '@/components/typography/text/text';
+import { Text } from '@/components/core/typography/text/text';
 import { PropsWithChildren, ReactElement } from 'react';
 
 type BreakPointBoxProps = PropsWithChildren;
